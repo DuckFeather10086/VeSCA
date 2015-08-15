@@ -405,6 +405,9 @@ end
             % - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
             % ENTER: close the path and return
             case 'return'
+                
+                zoom out
+                
                 [iXPath, iYPath] = fLiveWireGetPath(iPX, iPY, dXData(1), dYData(1));
                 if isempty(iXPath)
                     iXPath = dXData(1);
@@ -435,6 +438,39 @@ end
                 [iPX, iPY] = fLiveWireCalcP(dF, dXData(end), dYData(end), SOptions.dRadius);
                 fMotionFcn(hObject, []);
             % - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+            % E and Q: zoom in and out
+            case 'e'
+                
+                zoom(1.5)
+                
+            case 'q'
+                
+                zoom(.667)
+
+            % - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+            % W, A, S, D: scroll
+            case 'a'
+                
+                % ans is a convenient if hackey variable to use in a nested function
+                ans = get(eventdata.Source.CurrentAxes, 'xlim');
+                set(eventdata.Source.CurrentAxes, 'xlim', ans-25);
+                
+            case 'd'
+                
+                ans = get(eventdata.Source.CurrentAxes, 'xlim');
+                set(eventdata.Source.CurrentAxes, 'xlim', ans+25);
+                
+                                
+            case 'w'
+                
+                ans = get(eventdata.Source.CurrentAxes, 'ylim');
+                set(eventdata.Source.CurrentAxes, 'ylim', ans-25);
+                
+            case 's'
+                
+                ans = get(eventdata.Source.CurrentAxes, 'ylim');
+                set(eventdata.Source.CurrentAxes, 'ylim', ans+25);
+                
 
             otherwise
 
