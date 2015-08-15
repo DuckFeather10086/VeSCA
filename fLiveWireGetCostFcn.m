@@ -30,12 +30,6 @@ POSSIBILITY OF SUCH DAMAGE.
 
 function dF = fLiveWireGetCostFcn(dImg, dWz, dWg, dWd)
 
-if nargin < 2,
-    dWz = 0.2;
-    dWg = 0.8;
-    dWd = 0.2;
-end
-
 % -------------------------------------------------------------------------
 % Calculate the cost function
 

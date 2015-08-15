@@ -28,7 +28,8 @@ ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 POSSIBILITY OF SUCH DAMAGE.
 %}
 
-function varargout = livewire(I, dRadius, dCaptureRadius)
+function varargout = livewire(I, varargin)
+
 %LIVEWIRE Select a region of interest with the help of a live-wire [1].
 %   A replacement to MATLAB's ROIPOLY function. Supports ROIPOLY's
 %   interactive modes, i.e. those syntaxes where no contour points X and Y
@@ -145,11 +146,30 @@ end
 % -------------------------------------------------------------------------
 
 % -------------------------------------------------------------------------
-% Define optional input parameters if omitted
-if nargin < 2
-    SOptions.dRadius = 200;
-    SOptions.dCaptureRadius = 4;
+
+% Set optional input parameters to defaults
+SOptions.dRadius = 200;
+SOptions.dCaptureRadius = 4;
+SOptions.dWz = .2;
+SOptions.dWg = .8;
+SOptions.dWd = .2;
+
+% Reassign optional input parameters if provided
+for i = 2:2:nargin
+    switch varargin{i}
+        case 'dRadius'
+            SOptions.dRadius = varargin{i};
+        case 'dCaptureRadius'
+            SOptions.dCaptureRadius = varargin{i};
+        case 'dWz'
+            SOptions.dWz = varargin{i};
+        case 'dWg'
+            SOptions.dWg = varargin{i};
+        case 'dWd'
+            SOptions.dWd = varargin{i};
+    end
 end
+
 % -------------------------------------------------------------------------
 
 % -------------------------------------------------------------------------
@@ -219,7 +239,8 @@ end
 
 % -------------------------------------------------------------------------
 % Initialize the global variables
-dF          = fLiveWireGetCostFcn(dImg); % The cost function of the live-wire algorithm, see Ref [1].
+dF          = fLiveWireGetCostFcn(dImg, SOptions.dWz, SOptions.dWg, SOptions.dWd); 
+                                         % The cost function of the live-wire algorithm, see Ref [1].
 % dF        = fScale(-dImg);
 iPX         = zeros(size(dImg), 'int8'); % The path map that shows the cheapest path to the sast anchor point.
 iPY         = zeros(size(dImg), 'int8'); % The path map that shows the cheapest path to the sast anchor point.
